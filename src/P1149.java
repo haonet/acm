@@ -13,7 +13,7 @@ public class P1149 {
 	}
 
 	private static long f(int n, int m) {
-		return Cnm(n, m) * g(m);
+		return Cnm(n, n- m) * g(m);
 	}
 
 	private static long g(int n) {

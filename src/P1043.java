@@ -1,50 +1,49 @@
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Scanner;
-/*
- * result£ºWA
- * 2015-12-11 22:36:26
- * author£ºFayne
- */
+
 public class P1043 {
-	static class Pro{
-		int i, j;
-		int value;
-		Pro(int i, int j, int value){
-			this.i = i;
-			this.j = j;
-			this.value = value;
-		}
-	}
+	static final int INF = Integer.MAX_VALUE;
+	static int a[][];
+	static int b[];
+	static int n, min, sum;
+
 	public static void main(String[] args) {
 		Scanner cin = new Scanner(System.in);
-		int n = cin.nextInt();
-		Pro[] w = new Pro[n*n];
-		int count = 0;
-		for (int i=0; i<n; i++){
-			for (int j=0; j<n; j++){
-				w[count++] = new Pro(i, j, cin.nextInt());
+		while (cin.hasNext()) {
+			min = INF; sum = 0;
+			n = cin.nextInt();
+			a = new int[n][n];
+			b = new int[n];
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++)
+					a[i][j] = cin.nextInt();
 			}
+			search(0);
+			System.out.println(min);
 		}
-		Arrays.sort(w, new Comparator<Pro>() {
-
-			@Override
-			public int compare(Pro o1, Pro o2) {
-				return o1.value-o2.value;
-			}
-		});
-		int sum = 0;
-		int a[] = new int[n];
-		for (int i=0; i<n; i++){
-			a[i] = 0;
-		}
-		for (int i=0; i<n*n; i++){
-			if(a[w[i].j] == 0){
-				sum += w[i].value;
-				a[w[i].j] = 1;
-			}
-		}
-		System.out.println(sum);
 		cin.close();
+	}
+
+	private static void search(int cur) {
+		sum = 0;
+		if (cur == n){
+			for (int i=0; i<n; i++) {
+				sum += a[i][b[i]];	
+			}
+			if (sum < min)
+					min = sum;
+		}
+		else {
+			for (int i=0; i<n; i++) {
+				boolean ok = true;
+				b[cur] = i;
+				for (int j=0; j<cur; j++) {
+					if (b[cur] == b[j]) {
+						ok = false; break;
+					}
+				}
+				if (ok)
+					search(cur + 1);
+			}
+		}
 	}
 }
